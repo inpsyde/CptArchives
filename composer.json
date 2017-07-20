@@ -1,0 +1,37 @@
+{
+    "name": "inpsyde/cpt-archives",
+    "description": "Allows a post-like editing experience for post type archives.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Inpsyde GmbH",
+            "email": "hello@inpsyde.com",
+            "homepage": "http://inpsyde.com",
+            "role": "Company"
+        },
+        {
+            "name": "Giuseppe Mazzapica",
+            "email": "g.mazzapica@inpsyde.com",
+            "role": "Developer"
+        }
+    ],
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "require": {
+        "php": ">=7"
+    },
+    "autoload": {
+        "psr-4": {
+            "CptArchives\\": "src/"
+        }
+    },
+    "config": {
+        "optimize-autoloader": true
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.x-dev"
+        }
+    }
+}
