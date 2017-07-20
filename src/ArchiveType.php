@@ -1,6 +1,6 @@
 <?php declare( strict_types=1 ); # -*- coding: utf-8 -*-
 /*
- * This file is part of the inpsyde-teaser package.
+ * This file is part of the CptArchives package.
  *
  * (c) Inpsyde GmbH
  *
@@ -11,7 +11,7 @@
 namespace CptArchives;
 
 /**
- * @package CptArchivesUI
+ * @package CptArchives
  * @license http://opensource.org/licenses/MIT MIT
  */
 class ArchiveType {
