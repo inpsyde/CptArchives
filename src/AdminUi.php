@@ -205,10 +205,6 @@ class AdminUi {
 		\WP_Post_Type $cpt
 	): bool {
 
-		if ( ! Archive::for_type( $cpt )->archive_post_id() ) {
-			return false;
-		}
-
 		return (bool) add_submenu_page(
 			$parent,
 			$title,
