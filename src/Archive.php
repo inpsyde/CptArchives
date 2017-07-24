@@ -138,6 +138,19 @@ class Archive {
 	}
 
 	/**
+	 * @return string
+	 */
+	public function target_type(): string {
+
+		$type = get_post_meta( $this->post->ID, self::TARGET_TYPE_KEY, TRUE );
+		if ( ! $type || ! post_type_exists( $type ) ) {
+			return '';
+		}
+
+		return $type;
+	}
+
+	/**
 	 * Returns the title for the archive.
 	 *
 	 * @param string $before
@@ -168,7 +181,7 @@ class Archive {
 	 *
 	 * @return string
 	 */
-	public function archive_content( string $more_link_text = null, bool $strip_teaser = false ): string {
+	public function archive_content( string $more_link_text = null, bool $strip_teaser = FALSE ): string {
 
 		if ( ! $this->is_valid() ) {
 			return '';
@@ -202,7 +215,7 @@ class Archive {
 
 		return $this->is_valid()
 			? has_post_thumbnail( $this->post )
-			: false;
+			: FALSE;
 	}
 
 	/**
@@ -242,10 +255,10 @@ class Archive {
 	 *
 	 * @return mixed
 	 */
-	public function archive_meta( string $key = '', bool $single = false ) {
+	public function archive_meta( string $key = '', bool $single = FALSE ) {
 
 		if ( ! $this->is_valid( [ 'draft', 'publish', 'future', 'pending', 'private' ] ) ) {
-			return $single && $key ? false : [];
+			return $single && $key ? FALSE : [];
 		}
 
 		if ( ! $key ) {
