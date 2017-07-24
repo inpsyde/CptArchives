@@ -122,7 +122,7 @@ class Archive {
 	 *
 	 * @param \WP_Post $post
 	 */
-	private function __construct( \WP_Post $post = null ) {
+	public function __construct( \WP_Post $post = null ) {
 
 		$this->post = $post;
 	}
