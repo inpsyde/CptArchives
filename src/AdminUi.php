@@ -267,13 +267,6 @@ class AdminUi {
 		$post_ID          = $post_id;
 		$action           = 'edit';
 
-		global $wp_post_types;
-		if ( ! empty( $wp_post_types[ $typenow ] ) ) {
-			$wp_post_types[ $typenow ]->show_ui            = true;
-			$wp_post_types[ $typenow ]->public             = true;
-			$wp_post_types[ $typenow ]->publicly_queryable = true;
-		}
-
 		require_once ABSPATH . 'wp-admin/edit-form-advanced.php';
 	}
 
