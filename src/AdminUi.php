@@ -269,9 +269,11 @@ class AdminUi {
 
 		$post_type_object->publicly_queryable = true;
 		$post_type_object->public = true;
-		add_action( 'edit_form_after_title', function() use( $post_type_object ) {
+		add_filter( 'post_updated_messages', function( $messages ) use( $post_type_object ) {
 			$post_type_object->publicly_queryable = false;
 			$post_type_object->public = false;
+
+			return $messages;
 		});
 
 		require_once ABSPATH . 'wp-admin/edit-form-advanced.php';
