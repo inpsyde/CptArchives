@@ -19,7 +19,7 @@ class Bootstrap {
 	/**
 	 * @var bool
 	 */
-	private static $done = false;
+	private static $done = FALSE;
 
 	/**
 	 * Launch all the  bootstrap tasks, according to current application "side".
@@ -31,16 +31,16 @@ class Bootstrap {
 	public static function bootstrap() {
 
 		if ( self::$done ) {
-			return false;
+			return FALSE;
 		}
 
-		self::$done = true;
+		self::$done = TRUE;
 		$instance   = new static();
 
 		$instance->core();
 		is_admin() ? $instance->backend() : $instance->frontend();
 
-		return true;
+		return TRUE;
 	}
 
 	/**
@@ -84,7 +84,18 @@ class Bootstrap {
 			'post_type_archive_title',
 			function ( $value ) {
 
-				return archive_title() ? : $value;
+				$title = archive_title();
+				if ( $title ) {
+					add_filter( 'get_the_archive_title', function ( $archive_title ) use ( $title ) {
+						if ( $archive_title === sprintf( __( 'Archives: %s' ), $title ) ) {
+							$archive_title = $title;
+						}
+
+						return $archive_title;
+					} );
+				}
+
+				return $title ? : $value;
 			}
 		);
 
