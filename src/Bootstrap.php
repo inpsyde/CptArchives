@@ -106,6 +106,27 @@ class Bootstrap {
 				return archive_excerpt() ? : $value;
 			}
 		);
+
+		add_action( 'admin_bar_menu', function ( \WP_Admin_Bar $wp_admin_bar ) {
+			if ( ! is_post_type_archive() ) {
+				return;
+			}
+
+			$archive = Archive::for_current_type();
+			$post_id = $archive->archive_post_id();
+			if ( $post_id && current_user_can( 'edit_post', $post_id ) ) {
+				$wp_admin_bar->add_menu(
+					[
+						'id'    => 'edit',
+						'title' => sprintf( __( 'Edit Archive', 'cpt-archives' ) ),
+						'href'  => add_query_arg(
+							[ 'page' => $archive->target_type() . AdminUi::MENU_SUFFIX, ],
+							admin_url( 'admin.php' )
+						)
+					]
+				);
+			}
+		}, 80 );
 	}
 
 }
