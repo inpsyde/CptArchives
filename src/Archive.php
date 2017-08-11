@@ -203,7 +203,9 @@ class Archive {
 	 */
 	public function archive_excerpt(): string {
 
-		return $this->is_valid() ? (string) apply_filters( 'the_excerpt', get_the_excerpt( $this->post ) ) : '';
+		return $this->is_valid() && $this->post->post_excerpt
+			? (string) apply_filters( 'the_excerpt', get_the_excerpt( $this->post ) )
+			: '';
 	}
 
 	/**
