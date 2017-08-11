@@ -203,9 +203,17 @@ class Archive {
 	 */
 	public function archive_excerpt(): string {
 
-		return $this->is_valid() && $this->post->post_excerpt
-			? (string) apply_filters( 'the_excerpt', get_the_excerpt( $this->post ) )
-			: '';
+		if ( ! $this->is_valid() ) {
+			return '';
+		}
+
+		setup_postdata( $this->post );
+		ob_start();
+		the_excerpt();
+		$excerpt = ob_get_clean();
+		wp_reset_postdata();
+
+		return $excerpt;
 	}
 
 	/**
