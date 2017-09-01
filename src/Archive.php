@@ -46,7 +46,7 @@ class Archive {
 		$type_name = $type instanceof \WP_Post_Type ? $type->name : $type;
 		is_string( $type_name ) or $type_name = '';
 
-		if ( ! $type ) {
+		if ( ! $type_name ) {
 			return new static();
 		}
 
@@ -55,16 +55,14 @@ class Archive {
 		}
 
 		$post_type = get_post_type_object( $type_name );
+
 		if ( ! $post_type || ! $post_type->has_archive ) {
 			return new static();
 		}
 
-		$valid_types      = ArchiveType::target_post_types();
-		$valid_type_names = array_map( function ( \WP_Post_Type $post_type ) {
-			return $post_type->name;
-		}, $valid_types );
+		$valid_types  = ArchiveType::target_post_types();
 
-		if ( ! in_array( $type, $valid_type_names, TRUE ) ) {
+		if ( ! array_key_exists( $type_name, $valid_types ) ) {
 			return new static();
 		}
 
