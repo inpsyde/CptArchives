@@ -18,6 +18,53 @@ class ArchiveType {
 
 	const SLUG = 'cpt_archive';
 	const FILTER_ARGS = 'cpt-archives.cpt-archive-args';
+	const FILTER_ALLOWED_CPTS = 'cpt-archives.allowed-cpts';
+
+	const CORE_TYPES = [
+		'post',
+		'page',
+		'attachment',
+		'revision',
+		'nav_menu_item',
+		'custom_css',
+		'customize_changeset',
+	];
+
+	/**
+	 * Return the list of post types we should add an entry for.
+	 *
+	 * That is, those that have and archive and are public.
+	 * Return value is filterable.
+	 *
+	 * @return \WP_Post_Type[]
+	 */
+	public static function target_post_types(): array {
+
+		$types = get_post_types(
+			[
+				'has_archive'        => TRUE,
+				'publicly_queryable' => TRUE,
+				'_builtin'           => FALSE
+			],
+			'objects'
+		);
+
+		$allowed_types = (array) apply_filters( self::FILTER_ALLOWED_CPTS, $types );
+		$allowed_types and $allowed_types = array_filter(
+			$allowed_types,
+			function ( $type ) {
+
+				return
+					$type instanceof \WP_Post_Type
+					&& $type->has_archive
+					&& $type->publicly_queryable
+					&& $type->_builtin === FALSE
+					&& ! in_array( $type->name, self::CORE_TYPES, TRUE );
+			}
+		);
+
+		return $allowed_types;
+	}
 
 	/**
 	 * Setup the post type and other necessary task to make it work.
@@ -29,10 +76,10 @@ class ArchiveType {
 		if ( $this->register_post_type() ) {
 			$this->filter_urls();
 
-			return true;
+			return TRUE;
 		}
 
-		return false;
+		return FALSE;
 	}
 
 	/**
@@ -43,7 +90,7 @@ class ArchiveType {
 	 * @return bool
 	 */
 	private function register_post_type(): bool {
-
+		
 		$args = [
 			'label'  => __( 'CPT Archives', 'cpt-archives' ),
 			'labels' => [
@@ -66,7 +113,7 @@ class ArchiveType {
 			],
 
 			'capability_type'   => 'post',
-			'map_meta_cap'      => true,
+			'map_meta_cap'      => TRUE,
 			'capabilities'      => [ 'create_posts' => 'do_not_allow' ],
 			'supports'          => [
 				'title',
@@ -76,25 +123,25 @@ class ArchiveType {
 				'custom-fields',
 				'revisions',
 			],
-			'show_in_nav_menus' => true,
-			'show_in_rest'      => false,
+			'show_in_nav_menus' => TRUE,
+			'show_in_rest'      => FALSE,
 		];
 
 		$args = (array) apply_filters( self::FILTER_ARGS, $args );
 
 		$forced = [
-			'public'              => false,
-			'hierarchical'        => false,
-			'exclude_from_search' => true,
-			'publicly_queryable'  => false,
-			'show_ui'             => false,
-			'show_in_menu'        => false,
-			'show_in_admin_bar'   => false,
-			'has_archive'         => false,
-			'rewrite'             => false,
-			'query_var'           => false,
+			'public'              => FALSE,
+			'hierarchical'        => FALSE,
+			'exclude_from_search' => TRUE,
+			'publicly_queryable'  => FALSE,
+			'show_ui'             => FALSE,
+			'show_in_menu'        => FALSE,
+			'show_in_admin_bar'   => FALSE,
+			'has_archive'         => FALSE,
+			'rewrite'             => FALSE,
+			'query_var'           => FALSE,
 			'permalink_epmask'    => EP_NONE,
-			'delete_with_user'    => false,
+			'delete_with_user'    => FALSE,
 		];
 
 		$registered = register_post_type( self::SLUG, array_merge( $args, $forced ) );
@@ -115,7 +162,7 @@ class ArchiveType {
 					return;
 				}
 
-				$target_type = get_post_meta( $post_id, Archive::TARGET_TYPE_KEY, true );
+				$target_type = get_post_meta( $post_id, Archive::TARGET_TYPE_KEY, TRUE );
 				if ( ! $target_type || ! post_type_exists( $target_type ) ) {
 					return;
 				}
@@ -140,7 +187,7 @@ class ArchiveType {
 					return $link;
 				}
 
-				$target_type = get_post_meta( $post_id, Archive::TARGET_TYPE_KEY, true );
+				$target_type = get_post_meta( $post_id, Archive::TARGET_TYPE_KEY, TRUE );
 				if ( ! $target_type || ! post_type_exists( $target_type ) ) {
 					return $link;
 				}
@@ -164,7 +211,7 @@ class ArchiveType {
 					return $post_link;
 				}
 
-				$target_type = get_post_meta( $post->ID, Archive::TARGET_TYPE_KEY, true );
+				$target_type = get_post_meta( $post->ID, Archive::TARGET_TYPE_KEY, TRUE );
 
 				if ( ! $target_type ) {
 					return $post_link;
@@ -184,7 +231,7 @@ class ArchiveType {
 					return $preview_link;
 				}
 
-				$target_type = get_post_meta( $post->ID, Archive::TARGET_TYPE_KEY, true );
+				$target_type = get_post_meta( $post->ID, Archive::TARGET_TYPE_KEY, TRUE );
 
 				if ( ! $target_type ) {
 					return $preview_link;
@@ -204,7 +251,7 @@ class ArchiveType {
 					return $permalink;
 				}
 
-				$target_type = get_post_meta( $post->ID, Archive::TARGET_TYPE_KEY, true );
+				$target_type = get_post_meta( $post->ID, Archive::TARGET_TYPE_KEY, TRUE );
 
 				if ( ! $target_type ) {
 					return $permalink;

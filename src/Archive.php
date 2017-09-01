@@ -54,6 +54,20 @@ class Archive {
 			return self::$instances[ $type_name ];
 		}
 
+		$post_type = get_post_type_object( $type_name );
+		if ( ! $post_type || ! $post_type->has_archive ) {
+			return new static();
+		}
+
+		$valid_types      = ArchiveType::target_post_types();
+		$valid_type_names = array_map( function ( \WP_Post_Type $post_type ) {
+			return $post_type->name;
+		}, $valid_types );
+
+		if ( ! in_array( $type, $valid_type_names, TRUE ) ) {
+			return new static();
+		}
+
 		$posts = get_posts(
 			[
 				'post_type'      => ArchiveType::SLUG,
@@ -68,11 +82,6 @@ class Archive {
 			self::$instances[ $type_name ] = new static( reset( $posts ) );
 
 			return self::$instances[ $type_name ];
-		}
-
-		$post_type = get_post_type_object( $type_name );
-		if ( ! $post_type ) {
-			return new static();
 		}
 
 		$insert = wp_insert_post(

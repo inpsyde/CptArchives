@@ -16,19 +16,8 @@ namespace CptArchives;
  */
 class AdminUi {
 
-	const FILTER_ALLOWED_CPTS = 'cpt-archives.allowed-cpts';
 	const FILTER_CAPABILITY = 'cpt-archives.can-edit-archive';
 	const MENU_SUFFIX = '-archive-post';
-
-	const CORE_TYPES = [
-		'post',
-		'page',
-		'attachment',
-		'revision',
-		'nav_menu_item',
-		'custom_css',
-		'customize_changeset',
-	];
 
 	/**
 	 * @var \WP_Post_Type|null
@@ -112,7 +101,7 @@ class AdminUi {
 	 */
 	private function setup_menu_pages(): bool {
 
-		$target_post_types = $this->target_post_types();
+		$target_post_types = ArchiveType::target_post_types();
 
 		if ( ! $target_post_types ) {
 			return FALSE;
@@ -153,33 +142,6 @@ class AdminUi {
 
 		return $done_count === $types_count;
 
-	}
-
-	/**
-	 * Return the list of post types we should add an entry for.
-	 *
-	 * That is, those that have and archive and are public.
-	 * Return value is filterable.
-	 *
-	 * @return \WP_Post_Type[]
-	 */
-	private function target_post_types() {
-
-		$types = get_post_types( [ 'has_archive' => TRUE, 'public' => TRUE ], 'objects' );
-
-		$allowed_types = (array) apply_filters( self::FILTER_ALLOWED_CPTS, $types );
-		$allowed_types and $allowed_types = array_filter(
-			$allowed_types,
-			function ( $type ) {
-
-				return
-					$type instanceof \WP_Post_Type
-					&& $type->_builtin === FALSE
-					&& ! in_array( $type->name, self::CORE_TYPES, TRUE );
-			}
-		);
-
-		return $allowed_types;
 	}
 
 	/**
