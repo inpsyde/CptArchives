@@ -12,7 +12,6 @@ namespace CptArchives;
 
 /**
  * @package CptArchives
- * @license http://opensource.org/licenses/MIT MIT
  */
 class AdminUi {
 

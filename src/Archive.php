@@ -14,7 +14,6 @@ namespace CptArchives;
  * Api object to get archive information.
  *
  * @package CptArchives
- * @license http://opensource.org/licenses/MIT MIT
  */
 class Archive {
 
