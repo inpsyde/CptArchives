@@ -2,7 +2,7 @@
     "name": "inpsyde/cpt-archives",
     "description": "Allows a post-like editing experience for post type archives.",
     "type": "library",
-    "license": "MIT",
+    "license": "GPL-2.0-or-later",
     "authors": [
         {
             "name": "Inpsyde GmbH",
