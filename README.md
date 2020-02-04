@@ -102,8 +102,8 @@ Via Composer, package name is **`inpsyde/cpt-archives`**.
 
 ## License and Copyright
 
-Copyright (c) 2017 Inpsyde GmbH.
+Copyright (c) since 2017 Inpsyde GmbH.
 
-"CPT Archives" code is licensed under [MIT license](https://opensource.org/licenses/MIT).
+"CPT Archives" code is licensed under [GPLv2+ license](LICENSE).
 
 The team at [Inpsyde](https://inpsyde.com) is engineering the Web since 2006.
